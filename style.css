@@ -1,0 +1,230 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #1a1a1a;
+  color: #e0e0e0;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.image-area {
+  margin-bottom: 1.5rem;
+}
+
+.source-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.source-label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.35rem;
+  color: #a0a0a0;
+}
+
+.templates-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.template-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.template-thumb {
+  display: block;
+  padding: 0;
+  border: 2px solid #444;
+  border-radius: 6px;
+  background: #2a2a2a;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.template-thumb:hover {
+  border-color: #666;
+}
+
+.template-thumb:focus {
+  outline: none;
+  border-color: #888;
+}
+
+.template-thumb img {
+  display: block;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.file-label {
+  display: inline-block;
+  margin-bottom: 0;
+  padding: 0.5rem 1rem;
+  background: #333;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.file-label:hover {
+  background: #444;
+}
+
+.file-label input {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.canvas-wrap {
+  position: relative;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+#memeCanvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.placeholder {
+  position: absolute;
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.placeholder.hidden {
+  display: none;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.controls input[type="text"],
+.controls textarea {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #2a2a2a;
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-family: inherit;
+  min-height: 4rem;
+}
+
+.controls textarea {
+  resize: vertical;
+}
+
+.controls input[type="text"]:focus,
+.controls textarea:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.controls .hint {
+  font-size: 0.8rem;
+  color: #888;
+  font-weight: normal;
+}
+
+.color-label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.controls input[type="color"] {
+  width: 2.5rem;
+  height: 2.25rem;
+  padding: 2px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #2a2a2a;
+  cursor: pointer;
+}
+
+.slider-label {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.slider-label output {
+  min-width: 2.5ch;
+  margin-right: 0.5rem;
+}
+
+.controls input[type="range"] {
+  flex: 1;
+  min-width: 120px;
+  margin-top: 0.25rem;
+}
+
+#downloadBtn {
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: #444;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#downloadBtn:hover:not(:disabled) {
+  background: #555;
+}
+
+#downloadBtn:disabled {
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+}

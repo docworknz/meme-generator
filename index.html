@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meme Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Meme Generator</h1>
+
+    <section class="image-area">
+      <div class="source-row">
+        <div class="templates-wrap">
+          <span class="source-label">Templates</span>
+          <div id="templateList" class="template-list" role="list"></div>
+        </div>
+        <label class="file-label">
+          <span>Or upload image</span>
+          <input type="file" id="imageInput" accept="image/*" />
+        </label>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="memeCanvas"></canvas>
+        <p id="placeholder" class="placeholder">Select an image to start</p>
+      </div>
+    </section>
+
+    <section class="controls">
+      <label>
+        Text <span class="hint">(Enter to split lines)</span>
+        <textarea id="memeText" placeholder="Add text (drag on canvas to move)" rows="3" maxlength="300"></textarea>
+      </label>
+      <label class="slider-label">
+        Text size: <output id="fontSizeValue">48</output>px
+        <input type="range" id="fontSize" min="16" max="120" value="48" />
+      </label>
+      <label class="color-label">
+        Text color
+        <input type="color" id="textColor" value="#ffffff" />
+      </label>
+      <label class="color-label">
+        Border color
+        <input type="color" id="borderColor" value="#000000" />
+      </label>
+      <button type="button" id="downloadBtn" disabled>Download meme</button>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
