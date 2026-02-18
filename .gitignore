@@ -16,3 +16,4 @@ npm-debug.log*
 # Local env (if you add tooling later)
 .env
 .env.local
+node_modules
