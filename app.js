@@ -85,7 +85,7 @@
       memeTextEl.value = '';
       memeTextEl.disabled = true;
       deleteTextBtn.disabled = true;
-      memeTextEl.placeholder = 'Select a text or click \'Add Text\' to start';
+      memeTextEl.placeholder = 'Select text or Add Text';
     }
   }
 
@@ -349,14 +349,18 @@
     const file = this.files && this.files[0];
     if (!file) return;
     const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
     img.onload = function () {
+      URL.revokeObjectURL(objectUrl);
       setImage(img);
     };
     img.onerror = function () {
+      URL.revokeObjectURL(objectUrl);
       placeholder.textContent = 'Failed to load image';
       placeholder.classList.remove('hidden');
     };
-    img.src = URL.createObjectURL(file);
+    img.src = objectUrl;
+    this.value = '';
   });
 
   memeTextEl.addEventListener('input', function() {

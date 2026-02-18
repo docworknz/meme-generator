@@ -7,50 +7,62 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
-    <h1>Meme Generator</h1>
-
-    <section class="image-area">
-      <div class="source-row">
-        <div class="templates-wrap">
-          <span class="source-label">Templates</span>
-          <div id="templateList" class="template-list" role="list"></div>
-        </div>
-        <label class="file-label">
-          <span>Or upload image</span>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-title">Templates</span>
+        <label class="upload-btn">
+          <span>Upload</span>
           <input type="file" id="imageInput" accept="image/*" />
         </label>
       </div>
+      <div id="templateList" class="template-list" role="list"></div>
+    </aside>
+
+    <section class="canvas-area">
       <div class="canvas-wrap">
         <canvas id="memeCanvas"></canvas>
-        <p id="placeholder" class="placeholder">Select an image to start</p>
+        <p id="placeholder" class="placeholder">Select a template or upload an image</p>
       </div>
     </section>
 
-    <section class="controls">
-      <div class="text-controls">
-        <button type="button" id="addTextBtn">Add Text</button>
-        <button type="button" id="deleteTextBtn" disabled>Delete Selected Text</button>
+    <div class="bottom-bar">
+      <div class="bottom-bar-inner">
+        <div class="tool-group">
+          <button type="button" id="addTextBtn" class="tool-btn" title="Add text">Add Text</button>
+          <button type="button" id="deleteTextBtn" class="tool-btn tool-btn-danger" disabled title="Delete selected text">Delete</button>
+        </div>
+        <div class="tool-divider"></div>
+        <div class="tool-group tool-group-text">
+          <label class="tool-label">
+            <span class="tool-label-text">Text</span>
+            <textarea id="memeText" placeholder="Select text or Add Text" rows="1" maxlength="300" disabled></textarea>
+          </label>
+        </div>
+        <div class="tool-divider"></div>
+        <div class="tool-group tool-group-slider">
+          <label class="tool-label-inline">
+            <span>Size</span>
+            <output id="fontSizeValue">48</output>
+            <input type="range" id="fontSize" min="16" max="120" value="48" />
+          </label>
+        </div>
+        <div class="tool-divider"></div>
+        <div class="tool-group tool-group-colors">
+          <label class="tool-color" title="Text color">
+            <span>Fill</span>
+            <input type="color" id="textColor" value="#ffffff" />
+          </label>
+          <label class="tool-color" title="Border color">
+            <span>Stroke</span>
+            <input type="color" id="borderColor" value="#000000" />
+          </label>
+        </div>
+        <div class="tool-divider"></div>
+        <button type="button" id="downloadBtn" class="tool-btn tool-btn-primary" disabled title="Download meme">Download</button>
       </div>
-      <label>
-        Text <span class="hint">(Enter to split lines)</span>
-        <textarea id="memeText" placeholder="Select a text or click 'Add Text' to start" rows="3" maxlength="300" disabled></textarea>
-      </label>
-      <label class="slider-label">
-        Text size: <output id="fontSizeValue">48</output>px
-        <input type="range" id="fontSize" min="16" max="120" value="48" />
-      </label>
-      <label class="color-label">
-        Text color
-        <input type="color" id="textColor" value="#ffffff" />
-      </label>
-      <label class="color-label">
-        Border color
-        <input type="color" id="borderColor" value="#000000" />
-      </label>
-      <button type="button" id="downloadBtn" disabled>Download meme</button>
-    </section>
-  </main>
+    </div>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
