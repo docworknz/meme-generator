@@ -41,14 +41,12 @@ export function Login() {
               autoFocus
               className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)]"
             />
-            {error && (
-              <p className="text-sm text-red-400">{error}</p>
-            )}
+            {error && <p className="text-sm text-red-400">{error}</p>}
             <button
               type="submit"
               className="w-full py-2 rounded-lg bg-[var(--accent)] text-black font-medium hover:bg-[var(--accent-hover)] transition-colors"
             >
-              Send code
+              Send code, please
             </button>
           </form>
         </div>
@@ -63,7 +61,9 @@ export function Login() {
           Enter code
         </h1>
         <p className="text-sm text-[var(--muted)] mb-4">
-          We sent a 6-digit code to <strong className="text-[var(--text)]">{sentEmail}</strong>. Enter it below.
+          We sent a 6-digit code to{" "}
+          <strong className="text-[var(--text)]">{sentEmail}</strong>. Enter it
+          below.
         </p>
         <form
           className="flex flex-col gap-3"
@@ -72,10 +72,12 @@ export function Login() {
             const code = codeRef.current?.value?.trim();
             if (!code) return;
             setError("");
-            db.auth.signInWithMagicCode({ email: sentEmail, code }).catch((err) => {
-              setError(err?.body?.message ?? "Invalid code");
-              if (codeRef.current) codeRef.current.value = "";
-            });
+            db.auth
+              .signInWithMagicCode({ email: sentEmail, code })
+              .catch((err) => {
+                setError(err?.body?.message ?? "Invalid code");
+                if (codeRef.current) codeRef.current.value = "";
+              });
           }}
         >
           <input
@@ -89,9 +91,7 @@ export function Login() {
             autoFocus
             className="w-full px-3 py-2 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[var(--accent)] text-center tracking-[0.5em] font-mono text-lg"
           />
-          {error && (
-            <p className="text-sm text-red-400">{error}</p>
-          )}
+          {error && <p className="text-sm text-red-400">{error}</p>}
           <button
             type="submit"
             className="w-full py-2 rounded-lg bg-[var(--accent)] text-black font-medium hover:bg-[var(--accent-hover)] transition-colors"
