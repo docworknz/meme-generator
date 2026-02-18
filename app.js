@@ -12,10 +12,13 @@
   const textColorEl = document.getElementById('textColor');
   const borderColorEl = document.getElementById('borderColor');
   const downloadBtn = document.getElementById('downloadBtn');
+  const addTextBtn = document.getElementById('addTextBtn');
+  const deleteTextBtn = document.getElementById('deleteTextBtn');
 
   let image = null;
-  let textX = 0;
-  let textY = 0;
+  let texts = []; // Array of text objects: {id, text, x, y, fontSize, fillColor, strokeColor}
+  let selectedTextId = null;
+  let nextTextId = 1;
   let dragging = false;
   let dragOffsetX = 0;
   let dragOffsetY = 0;
@@ -24,11 +27,66 @@
 
   function setImage(img) {
     image = img;
-    textX = img.naturalWidth / 2;
-    textY = img.naturalHeight / 2;
     placeholder.classList.add('hidden');
     downloadBtn.disabled = false;
     render();
+  }
+
+  function createTextObject(text = 'New Text') {
+    if (!image) return null;
+    return {
+      id: nextTextId++,
+      text: text,
+      x: image.naturalWidth / 2,
+      y: image.naturalHeight / 2,
+      fontSize: getFontSize(),
+      fillColor: textColorEl.value,
+      strokeColor: borderColorEl.value
+    };
+  }
+
+  function addText() {
+    if (!image) return;
+    const textObj = createTextObject();
+    texts.push(textObj);
+    selectText(textObj.id);
+    render();
+  }
+
+  function deleteSelectedText() {
+    if (!selectedTextId) return;
+    texts = texts.filter(t => t.id !== selectedTextId);
+    selectedTextId = null;
+    updateControls();
+    render();
+  }
+
+  function selectText(id) {
+    selectedTextId = id;
+    updateControls();
+  }
+
+  function getSelectedText() {
+    return texts.find(t => t.id === selectedTextId);
+  }
+
+  function updateControls() {
+    const selectedText = getSelectedText();
+    if (selectedText) {
+      memeTextEl.value = selectedText.text;
+      fontSizeEl.value = selectedText.fontSize;
+      fontSizeValue.textContent = selectedText.fontSize;
+      textColorEl.value = selectedText.fillColor;
+      borderColorEl.value = selectedText.strokeColor;
+      memeTextEl.disabled = false;
+      deleteTextBtn.disabled = false;
+      memeTextEl.placeholder = 'Edit selected text (drag on canvas to move)';
+    } else {
+      memeTextEl.value = '';
+      memeTextEl.disabled = true;
+      deleteTextBtn.disabled = true;
+      memeTextEl.placeholder = 'Select a text or click \'Add Text\' to start';
+    }
   }
 
   function getFontSize() {
@@ -133,14 +191,13 @@
     }
   }
 
-  function getTextHitBox() {
-    if (!hasVisibleText(memeTextEl.value)) return null;
-    const fontSize = getFontSize();
-    ctx.font = 'bold ' + fontSize + 'px Impact, "Arial Black", sans-serif';
+  function getTextHitBox(textObj) {
+    if (!hasVisibleText(textObj.text)) return null;
+    ctx.font = 'bold ' + textObj.fontSize + 'px Impact, "Arial Black", sans-serif';
     const maxWidth = Math.max(100, canvas.width - wrapPadding);
-    const lines = getWrappedLines(ctx, memeTextEl.value, maxWidth);
+    const lines = getWrappedLines(ctx, textObj.text, maxWidth);
     if (lines.length === 0) return null;
-    const lineHeight = fontSize * lineHeightMultiplier;
+    const lineHeight = textObj.fontSize * lineHeightMultiplier;
     let maxW = 0;
     for (let i = 0; i < lines.length; i++) {
       const w = ctx.measureText(lines[i]).width;
@@ -148,7 +205,13 @@
     }
     const halfW = maxW / 2 + 8;
     const halfH = (lines.length * lineHeight) / 2 + 8;
-    return { left: textX - halfW, right: textX + halfW, top: textY - halfH, bottom: textY + halfH };
+    return { 
+      left: textObj.x - halfW, 
+      right: textObj.x + halfW, 
+      top: textObj.y - halfH, 
+      bottom: textObj.y + halfH,
+      textId: textObj.id
+    };
   }
 
   function screenToCanvas(clientX, clientY) {
@@ -161,10 +224,20 @@
     };
   }
 
+  function getTextAtPosition(canvasX, canvasY) {
+    // Check texts in reverse order (top to bottom) so the topmost text is selected
+    for (let i = texts.length - 1; i >= 0; i--) {
+      const textObj = texts[i];
+      const box = getTextHitBox(textObj);
+      if (box && canvasX >= box.left && canvasX <= box.right && canvasY >= box.top && canvasY <= box.bottom) {
+        return textObj;
+      }
+    }
+    return null;
+  }
+
   function isOverText(canvasX, canvasY) {
-    const box = getTextHitBox();
-    if (!box) return false;
-    return canvasX >= box.left && canvasX <= box.right && canvasY >= box.top && canvasY <= box.bottom;
+    return getTextAtPosition(canvasX, canvasY) !== null;
   }
 
   function render() {
@@ -175,20 +248,43 @@
     canvas.height = h;
     ctx.drawImage(image, 0, 0, w, h);
 
-    const fontSize = getFontSize();
-    const fillColor = textColorEl.value;
-    const strokeColor = borderColorEl.value;
-    drawText(memeTextEl.value, textX, textY, fontSize, fillColor, strokeColor, w);
+    // Draw all text objects
+    texts.forEach(textObj => {
+      drawText(textObj.text, textObj.x, textObj.y, textObj.fontSize, textObj.fillColor, textObj.strokeColor, w);
+    });
+
+    // Draw selection indicator for selected text
+    if (selectedTextId) {
+      const selectedText = getSelectedText();
+      if (selectedText) {
+        const box = getTextHitBox(selectedText);
+        if (box) {
+          ctx.strokeStyle = '#00aaff';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([5, 5]);
+          ctx.strokeRect(box.left, box.top, box.right - box.left, box.bottom - box.top);
+          ctx.setLineDash([]);
+        }
+      }
+    }
   }
 
   canvas.addEventListener('mousedown', function (e) {
     if (!image) return;
     const pos = screenToCanvas(e.clientX, e.clientY);
-    if (isOverText(pos.x, pos.y)) {
+    const textAtPos = getTextAtPosition(pos.x, pos.y);
+    if (textAtPos) {
+      selectText(textAtPos.id);
       dragging = true;
-      dragOffsetX = pos.x - textX;
-      dragOffsetY = pos.y - textY;
+      dragOffsetX = pos.x - textAtPos.x;
+      dragOffsetY = pos.y - textAtPos.y;
       canvas.style.cursor = 'grabbing';
+      render(); // Re-render to show selection
+    } else {
+      // Clicked on empty area, deselect
+      selectedTextId = null;
+      updateControls();
+      render();
     }
   });
 
@@ -204,11 +300,14 @@
   });
 
   document.addEventListener('mousemove', function (e) {
-    if (!dragging || !image) return;
+    if (!dragging || !image || !selectedTextId) return;
     const pos = screenToCanvas(e.clientX, e.clientY);
-    textX = pos.x - dragOffsetX;
-    textY = pos.y - dragOffsetY;
-    render();
+    const selectedText = getSelectedText();
+    if (selectedText) {
+      selectedText.x = pos.x - dragOffsetX;
+      selectedText.y = pos.y - dragOffsetY;
+      render();
+    }
   });
 
   document.addEventListener('mouseup', function () {
@@ -260,15 +359,41 @@
     img.src = URL.createObjectURL(file);
   });
 
-  memeTextEl.addEventListener('input', render);
+  memeTextEl.addEventListener('input', function() {
+    const selectedText = getSelectedText();
+    if (selectedText) {
+      selectedText.text = this.value;
+      render();
+    }
+  });
 
   fontSizeEl.addEventListener('input', function () {
     fontSizeValue.textContent = this.value;
-    render();
+    const selectedText = getSelectedText();
+    if (selectedText) {
+      selectedText.fontSize = parseInt(this.value);
+      render();
+    }
   });
 
-  textColorEl.addEventListener('input', render);
-  borderColorEl.addEventListener('input', render);
+  textColorEl.addEventListener('input', function() {
+    const selectedText = getSelectedText();
+    if (selectedText) {
+      selectedText.fillColor = this.value;
+      render();
+    }
+  });
+
+  borderColorEl.addEventListener('input', function() {
+    const selectedText = getSelectedText();
+    if (selectedText) {
+      selectedText.strokeColor = this.value;
+      render();
+    }
+  });
+
+  addTextBtn.addEventListener('click', addText);
+  deleteTextBtn.addEventListener('click', deleteSelectedText);
 
   downloadBtn.addEventListener('click', function () {
     if (!image) return;
@@ -277,4 +402,7 @@
     link.href = canvas.toDataURL('image/png');
     link.click();
   });
+
+  // Initialize controls state
+  updateControls();
 })();

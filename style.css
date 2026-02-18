@@ -139,6 +139,49 @@ h1 {
   gap: 1rem;
 }
 
+.text-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.text-controls button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  background: #444;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.text-controls button:hover:not(:disabled) {
+  background: #555;
+}
+
+.text-controls button:disabled {
+  background: #333;
+  color: #888;
+  cursor: not-allowed;
+}
+
+#addTextBtn {
+  background: #0066cc;
+}
+
+#addTextBtn:hover {
+  background: #0077dd;
+}
+
+#deleteTextBtn {
+  background: #cc4444;
+}
+
+#deleteTextBtn:hover:not(:disabled) {
+  background: #dd5555;
+}
+
 .controls label {
   display: flex;
   flex-direction: column;

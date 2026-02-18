@@ -28,9 +28,13 @@
     </section>
 
     <section class="controls">
+      <div class="text-controls">
+        <button type="button" id="addTextBtn">Add Text</button>
+        <button type="button" id="deleteTextBtn" disabled>Delete Selected Text</button>
+      </div>
       <label>
         Text <span class="hint">(Enter to split lines)</span>
-        <textarea id="memeText" placeholder="Add text (drag on canvas to move)" rows="3" maxlength="300"></textarea>
+        <textarea id="memeText" placeholder="Select a text or click 'Add Text' to start" rows="3" maxlength="300" disabled></textarea>
       </label>
       <label class="slider-label">
         Text size: <output id="fontSizeValue">48</output>px
