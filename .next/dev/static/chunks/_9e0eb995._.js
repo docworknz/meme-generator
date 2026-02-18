@@ -457,6 +457,7 @@ __turbopack_context__.s([
     ()=>GalleryPage
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$db$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/db.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AppShell$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/AppShell.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Login$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/components/Login.tsx [app-client] (ecmascript)");
@@ -469,9 +470,11 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 function GalleryContent() {
     _s();
     const user = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$db$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"].useUser();
+    const [fullscreenMemeId, setFullscreenMemeId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const { isLoading, error, data } = __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$db$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"].useQuery({
         memes: {
             image: {},
@@ -486,6 +489,19 @@ function GalleryContent() {
             }
         }
     });
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "GalleryContent.useEffect": ()=>{
+            const onEscape = {
+                "GalleryContent.useEffect.onEscape": (e)=>{
+                    if (e.key === "Escape") setFullscreenMemeId(null);
+                }
+            }["GalleryContent.useEffect.onEscape"];
+            window.addEventListener("keydown", onEscape);
+            return ({
+                "GalleryContent.useEffect": ()=>window.removeEventListener("keydown", onEscape)
+            })["GalleryContent.useEffect"];
+        }
+    }["GalleryContent.useEffect"], []);
     if (isLoading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "flex items-center justify-center min-h-[40vh]",
@@ -494,12 +510,12 @@ function GalleryContent() {
                 children: "Loading..."
             }, void 0, false, {
                 fileName: "[project]/app/gallery/page.tsx",
-                lineNumber: 22,
+                lineNumber: 33,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/gallery/page.tsx",
-            lineNumber: 21,
+            lineNumber: 32,
             columnNumber: 7
         }, this);
     }
@@ -512,12 +528,14 @@ function GalleryContent() {
             ]
         }, void 0, true, {
             fileName: "[project]/app/gallery/page.tsx",
-            lineNumber: 29,
+            lineNumber: 40,
             columnNumber: 7
         }, this);
     }
     const memes = data?.memes ?? [];
-    const toggleUpvote = async (memeId)=>{
+    const fullscreenMeme = fullscreenMemeId ? memes.find((m)=>m.id === fullscreenMemeId) : null;
+    const toggleUpvote = async (memeId, e)=>{
+        e.stopPropagation();
         if (!user?.id) return;
         const meme = memes.find((m)=>m.id === memeId);
         if (!meme?.upvotes) return;
@@ -540,7 +558,7 @@ function GalleryContent() {
                 children: "Gallery"
             }, void 0, false, {
                 fileName: "[project]/app/gallery/page.tsx",
-                lineNumber: 56,
+                lineNumber: 71,
                 columnNumber: 7
             }, this),
             memes.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -548,7 +566,7 @@ function GalleryContent() {
                 children: "No memes yet. Create one from the Create page."
             }, void 0, false, {
                 fileName: "[project]/app/gallery/page.tsx",
-                lineNumber: 58,
+                lineNumber: 73,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "grid grid-cols-1 sm:grid-cols-2 gap-4",
@@ -559,27 +577,37 @@ function GalleryContent() {
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("article", {
                         className: "rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden",
                         children: [
-                            imageUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                src: imageUrl,
-                                alt: "Meme",
-                                className: "w-full aspect-auto object-contain bg-[#1a1a1a]"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                type: "button",
+                                className: "w-full block text-left cursor-pointer focus:outline-none focus:ring-0",
+                                onClick: ()=>setFullscreenMemeId(meme.id),
+                                "aria-label": "View full screen",
+                                children: imageUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                    src: imageUrl,
+                                    alt: "Meme",
+                                    className: "w-full aspect-auto object-contain bg-[#1a1a1a]"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/gallery/page.tsx",
+                                    lineNumber: 94,
+                                    columnNumber: 21
+                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "w-full aspect-video bg-[#2a2a2a] flex items-center justify-center text-[var(--muted)] text-sm",
+                                    children: "Loading image..."
+                                }, void 0, false, {
+                                    fileName: "[project]/app/gallery/page.tsx",
+                                    lineNumber: 100,
+                                    columnNumber: 21
+                                }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/gallery/page.tsx",
-                                lineNumber: 73,
-                                columnNumber: 19
-                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "w-full aspect-video bg-[#2a2a2a] flex items-center justify-center text-[var(--muted)] text-sm",
-                                children: "Loading image..."
-                            }, void 0, false, {
-                                fileName: "[project]/app/gallery/page.tsx",
-                                lineNumber: 79,
-                                columnNumber: 19
+                                lineNumber: 87,
+                                columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "p-3 flex items-center justify-between",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "button",
-                                    onClick: ()=>toggleUpvote(meme.id),
+                                    onClick: (e)=>toggleUpvote(meme.id, e),
                                     disabled: !user?.id,
                                     className: `flex items-center gap-1.5 text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${hasUpvoted ? "text-[var(--accent)]" : "text-[var(--muted)] hover:text-[var(--text)]"}`,
                                     title: user ? hasUpvoted ? "Remove upvote" : "Upvote" : "Sign in to upvote",
@@ -589,47 +617,81 @@ function GalleryContent() {
                                             children: upvoteCount
                                         }, void 0, false, {
                                             fileName: "[project]/app/gallery/page.tsx",
-                                            lineNumber: 95,
+                                            lineNumber: 117,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "upvote"
                                         }, void 0, false, {
                                             fileName: "[project]/app/gallery/page.tsx",
-                                            lineNumber: 96,
+                                            lineNumber: 118,
                                             columnNumber: 21
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/gallery/page.tsx",
-                                    lineNumber: 84,
+                                    lineNumber: 106,
                                     columnNumber: 19
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/gallery/page.tsx",
-                                lineNumber: 83,
+                                lineNumber: 105,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, meme.id, true, {
                         fileName: "[project]/app/gallery/page.tsx",
-                        lineNumber: 68,
+                        lineNumber: 83,
                         columnNumber: 15
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/app/gallery/page.tsx",
-                lineNumber: 60,
+                lineNumber: 75,
+                columnNumber: 9
+            }, this),
+            fullscreenMeme && fullscreenMeme.image?.url && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4",
+                onClick: ()=>setFullscreenMemeId(null),
+                role: "dialog",
+                "aria-modal": "true",
+                "aria-label": "Meme full screen",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        type: "button",
+                        className: "absolute top-4 right-4 text-[var(--text)] text-sm font-medium hover:text-[var(--accent)] transition-colors z-10",
+                        onClick: ()=>setFullscreenMemeId(null),
+                        "aria-label": "Close",
+                        children: "Close"
+                    }, void 0, false, {
+                        fileName: "[project]/app/gallery/page.tsx",
+                        lineNumber: 135,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                        src: fullscreenMeme.image.url,
+                        alt: "Meme",
+                        className: "max-w-full max-h-full object-contain",
+                        onClick: (e)=>e.stopPropagation()
+                    }, void 0, false, {
+                        fileName: "[project]/app/gallery/page.tsx",
+                        lineNumber: 143,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/gallery/page.tsx",
+                lineNumber: 128,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/gallery/page.tsx",
-        lineNumber: 55,
+        lineNumber: 70,
         columnNumber: 5
     }, this);
 }
-_s(GalleryContent, "Mq8Xe7CL+DacFUI+YlXjWJCVK38=", false, function() {
+_s(GalleryContent, "MTfCNhFrgm62/r7fLu1j/BYsWtE=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$db$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"].useUser,
         __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$db$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"].useQuery
@@ -643,28 +705,28 @@ function GalleryPage() {
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$AppShell$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AppShell"], {
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(GalleryContent, {}, void 0, false, {
                         fileName: "[project]/app/gallery/page.tsx",
-                        lineNumber: 113,
+                        lineNumber: 160,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/gallery/page.tsx",
-                    lineNumber: 112,
+                    lineNumber: 159,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/gallery/page.tsx",
-                lineNumber: 111,
+                lineNumber: 158,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$db$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["db"].SignedOut, {
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$app$2f$components$2f$Login$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Login"], {}, void 0, false, {
                     fileName: "[project]/app/gallery/page.tsx",
-                    lineNumber: 117,
+                    lineNumber: 164,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/gallery/page.tsx",
-                lineNumber: 116,
+                lineNumber: 163,
                 columnNumber: 7
             }, this)
         ]

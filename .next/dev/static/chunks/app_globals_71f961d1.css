@@ -324,6 +324,10 @@
     position: absolute;
   }
 
+  .fixed {
+    position: fixed;
+  }
+
   .relative {
     position: relative;
   }
@@ -332,12 +336,28 @@
     position: sticky;
   }
 
+  .inset-0 {
+    inset: calc(var(--spacing) * 0);
+  }
+
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
 
+  .top-4 {
+    top: calc(var(--spacing) * 4);
+  }
+
+  .right-4 {
+    right: calc(var(--spacing) * 4);
+  }
+
   .z-10 {
     z-index: 10;
+  }
+
+  .z-50 {
+    z-index: 50;
   }
 
   .m-0 {
@@ -671,6 +691,16 @@
     background-color: var(--surface);
   }
 
+  .bg-black\/95 {
+    background-color: #000000f2;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .bg-black\/95 {
+      background-color: color-mix(in oklab, var(--color-black) 95%, transparent);
+    }
+  }
+
   .bg-transparent {
     background-color: #0000;
   }
@@ -737,6 +767,10 @@
 
   .text-center {
     text-align: center;
+  }
+
+  .text-left {
+    text-align: left;
   }
 
   .font-mono {
@@ -880,6 +914,12 @@
   }
 
   @media (hover: hover) {
+    .hover\:text-\[var\(--accent\)\]:hover {
+      color: var(--accent);
+    }
+  }
+
+  @media (hover: hover) {
     .hover\:text-\[var\(--text\)\]:hover {
       color: var(--text);
     }
@@ -901,6 +941,11 @@
 
   .focus\:border-\[var\(--accent\)\]:focus {
     border-color: var(--accent);
+  }
+
+  .focus\:ring-0:focus {
+    --tw-ring-shadow: var(--tw-ring-inset, ) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
 
   .focus\:outline-none:focus {
